@@ -1,0 +1,35 @@
+{% extends "shared/base.html" %}
+{% block title %}Staff Dashboard{% endblock %}
+{% block sidebar %}{% include "shared/staff_sidebar.html" %}{% endblock %}
+{% block main_class %}col-md-10{% endblock %}
+
+{% block content %}
+<h3 class="brand-font mb-4">My Dashboard</h3>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4"><div class="stat-card"><div class="stat-number">{{ my_treks|length }}</div><div class="stat-label">Assigned Treks</div></div></div>
+    <div class="col-md-4"><div class="stat-card"><div class="stat-number">{{ total_participants }}</div><div class="stat-label">Total Participants</div></div></div>
+    <div class="col-md-4"><div class="stat-card"><div class="stat-number">{{ open_treks }}</div><div class="stat-label">Open Treks</div></div></div>
+</div>
+
+<div class="stat-card p-0">
+    <div class="p-3 pb-0 stat-label">My Assigned Treks</div>
+    <table class="table table-trek mb-0">
+        <thead><tr><th>Trek Name</th><th>Location</th><th>Participants</th><th>Slots</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        {% for t in my_treks %}
+            <tr>
+                <td>{{ t.name }}</td>
+                <td>{{ t.location }}</td>
+                <td>{{ t.booked_slots }}</td>
+                <td>{{ t.available_slots }} / {{ t.total_slots }}</td>
+                <td><span class="badge badge-status-{{ t.status }}">{{ t.status }}</span></td>
+                <td class="text-end"><a href="{{ url_for('staff.manage_trek', trek_id=t.id) }}" class="btn btn-sm btn-outline-secondary">Manage</a></td>
+            </tr>
+        {% else %}
+            <tr><td colspan="6" class="text-muted text-center py-3">No treks assigned yet — check back once the admin assigns you one.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

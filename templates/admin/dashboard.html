@@ -1,0 +1,76 @@
+{% extends "shared/base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block sidebar %}{% include "shared/admin_sidebar.html" %}{% endblock %}
+{% block main_class %}col-md-10{% endblock %}
+
+{% block content %}
+<h3 class="brand-font mb-4">Dashboard</h3>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="stat-card"><div class="stat-number">{{ stats.total_treks }}</div><div class="stat-label">Total Treks</div></div></div>
+    <div class="col-md-3"><div class="stat-card"><div class="stat-number">{{ stats.total_users }}</div><div class="stat-label">Total Users</div></div></div>
+    <div class="col-md-3"><div class="stat-card"><div class="stat-number">{{ stats.total_staff }}</div><div class="stat-label">Total Staff</div></div></div>
+    <div class="col-md-3"><div class="stat-card"><div class="stat-number">{{ stats.total_bookings }}</div><div class="stat-label">Total Bookings</div></div></div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-label mb-3">Treks by difficulty</div>
+            {% for bar in difficulty_chart %}
+            <div class="bar-row">
+                <div class="bar-row-label">{{ bar.label }} <span class="text-muted">({{ bar.count }})</span></div>
+                <div class="bar-track"><div class="bar-fill bar-difficulty-{{ bar.label }}" style="width: {{ bar.pct }}%"></div></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-label mb-3">Staff status breakdown</div>
+            {% for bar in staff_chart %}
+            <div class="bar-row">
+                <div class="bar-row-label">{{ bar.label }} <span class="text-muted">({{ bar.count }})</span></div>
+                <div class="bar-track"><div class="bar-fill bar-forest" style="width: {{ bar.pct }}%"></div></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-label mb-3">Most-booked treks</div>
+            {% for bar in popular_chart %}
+            <div class="bar-row">
+                <div class="bar-row-label">{{ bar.label }} <span class="text-muted">({{ bar.count }})</span></div>
+                <div class="bar-track"><div class="bar-fill bar-amber" style="width: {{ bar.pct }}%"></div></div>
+            </div>
+            {% else %}
+            <p class="text-muted mb-0">No bookings yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="stat-card">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="stat-label mb-0">Recent bookings</div>
+        <a href="{{ url_for('admin.bookings_list') }}" class="small">View all bookings →</a>
+    </div>
+    <table class="table table-trek table-sm mb-0">
+        <thead><tr><th>Booking ID</th><th>User</th><th>Trek</th><th>Booking Date</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for b in recent_bookings %}
+            <tr>
+                <td>B{{ '%03d' % b.id }}</td>
+                <td>{{ b.user.name }}</td>
+                <td>{{ b.trek.name }}</td>
+                <td>{{ b.booking_date.strftime('%d %b %Y') }}</td>
+                <td><span class="badge badge-status-{{ b.status }}">{{ b.status }}</span></td>
+            </tr>
+        {% else %}
+            <tr><td colspan="5" class="text-muted text-center">No bookings yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

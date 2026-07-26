@@ -1,0 +1,42 @@
+{% extends "shared/base.html" %}
+{% block title %}Manage Treks{% endblock %}
+{% block sidebar %}{% include "shared/admin_sidebar.html" %}{% endblock %}
+{% block main_class %}col-md-10{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="brand-font mb-0">Treks</h3>
+    <a href="{{ url_for('admin.new_trek') }}" class="btn btn-amber">+ Add New Trek</a>
+</div>
+
+<form method="GET" class="mb-3">
+    <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search treks by name or location...">
+</form>
+
+<div class="stat-card p-0">
+    <table class="table table-trek mb-0">
+        <thead><tr><th>ID</th><th>Name</th><th>Location</th><th>Difficulty</th><th>Slots</th><th>Status</th><th>Assigned Staff</th><th></th></tr></thead>
+        <tbody>
+        {% for t in treks %}
+            <tr>
+                <td>{{ t.id }}</td>
+                <td>{{ t.name }}</td>
+                <td>{{ t.location }}</td>
+                <td><span class="badge badge-difficulty-{{ t.difficulty }}">{{ t.difficulty }}</span></td>
+                <td>{{ t.available_slots }} / {{ t.total_slots }}</td>
+                <td><span class="badge badge-status-{{ t.status }}">{{ t.status }}</span></td>
+                <td>{{ t.assigned_staff.name if t.assigned_staff else '—' }}</td>
+                <td class="text-end">
+                    <a href="{{ url_for('admin.edit_trek', trek_id=t.id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <form method="POST" action="{{ url_for('admin.delete_trek', trek_id=t.id) }}" class="d-inline" onsubmit="return confirm('Delete this trek?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="8" class="text-muted text-center py-3">No treks found.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

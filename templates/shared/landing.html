@@ -1,0 +1,35 @@
+{% extends "shared/base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="landing-hero text-center rounded-3 mb-4">
+    <h1 class="brand-font display-5 fw-bold">Plan, guide, and book treks — all in one place</h1>
+    <p class="lead mt-3">TrailBase connects admins, trek staff, and trekkers so nothing falls through a spreadsheet again.</p>
+    <div class="mt-4">
+        <a href="{{ url_for('auth.login') }}" class="btn btn-amber btn-lg me-2">Log in</a>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light btn-lg">Register</a>
+    </div>
+</div>
+<div class="row g-4 text-center">
+    <div class="col-md-4">
+        <div class="stat-card h-100">
+            <div class="fs-1">🧭</div>
+            <h5 class="mt-2">Admins</h5>
+            <p class="text-muted mb-0">Create treks, approve staff, and keep an eye on the whole operation.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card h-100">
+            <div class="fs-1">🎒</div>
+            <h5 class="mt-2">Trek Staff</h5>
+            <p class="text-muted mb-0">Manage your assigned treks, update slots, and track your participants.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card h-100">
+            <div class="fs-1">⛰️</div>
+            <h5 class="mt-2">Trekkers</h5>
+            <p class="text-muted mb-0">Search, book, and keep a running history of every trail you've walked.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

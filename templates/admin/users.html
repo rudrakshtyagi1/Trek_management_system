@@ -1,0 +1,44 @@
+{% extends "shared/base.html" %}
+{% block title %}Manage Users{% endblock %}
+{% block sidebar %}{% include "shared/admin_sidebar.html" %}{% endblock %}
+{% block main_class %}col-md-10{% endblock %}
+
+{% block content %}
+<h3 class="brand-font mb-3">Users</h3>
+
+<form method="GET" class="mb-3">
+    <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search users by name or email...">
+</form>
+
+<div class="stat-card p-0">
+    <table class="table table-trek mb-0">
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Contact</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        {% for u in users %}
+            <tr>
+                <td>U{{ '%03d' % u.id }}</td>
+                <td>{{ u.name }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.contact or '—' }}</td>
+                <td>
+                    {% if u.is_blacklisted %}
+                        <span class="badge bg-danger">Blacklisted</span>
+                    {% else %}
+                        <span class="badge bg-success">Active</span>
+                    {% endif %}
+                </td>
+                <td class="text-end">
+                    <form method="POST" action="{{ url_for('admin.toggle_user_blacklist', user_id=u.id) }}" class="d-inline">
+                        <button class="btn btn-sm {{ 'btn-outline-secondary' if u.is_blacklisted else 'btn-outline-danger' }}">
+                            {{ 'Reinstate' if u.is_blacklisted else 'Blacklist' }}
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="6" class="text-muted text-center py-3">No users found.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

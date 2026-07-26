@@ -1,0 +1,174 @@
+:root {
+    --forest: #223523;
+    --forest-dark: #16221a;
+    --moss: #4c6b4f;
+    --amber: #c8792e;
+    --amber-light: #e3a15c;
+    --sand: #f4efe6;
+    --sand-dark: #e8e0d0;
+    --ink: #2a2620;
+    --danger: #b3452f;
+}
+
+body {
+    background-color: var(--sand);
+    color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+.brand-font {
+    font-family: Georgia, "Times New Roman", serif;
+    letter-spacing: 0.02em;
+}
+
+/* Top nav */
+.navbar-trek {
+    background-color: var(--forest);
+}
+.navbar-trek .navbar-brand,
+.navbar-trek .nav-link {
+    color: var(--sand) !important;
+}
+.navbar-trek .nav-link:hover {
+    color: var(--amber-light) !important;
+}
+.navbar-trek .nav-link.active {
+    color: var(--amber-light) !important;
+    font-weight: 600;
+}
+
+/* Sidebar (dashboard layouts) */
+.sidebar-trek {
+    background-color: var(--forest-dark);
+    min-height: calc(100vh - 56px);
+}
+.sidebar-trek a {
+    color: var(--sand-dark);
+    display: block;
+    padding: 0.65rem 1.1rem;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+}
+.sidebar-trek a:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+.sidebar-trek a.active {
+    border-left-color: var(--amber);
+    background-color: rgba(200, 121, 46, 0.15);
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Buttons */
+.btn-forest {
+    background-color: var(--forest);
+    border-color: var(--forest);
+    color: #fff;
+}
+.btn-forest:hover {
+    background-color: var(--moss);
+    border-color: var(--moss);
+    color: #fff;
+}
+.btn-amber {
+    background-color: var(--amber);
+    border-color: var(--amber);
+    color: #fff;
+}
+.btn-amber:hover {
+    background-color: var(--amber-light);
+    border-color: var(--amber-light);
+    color: #fff;
+}
+
+/* Cards / stats */
+.stat-card {
+    background-color: #fff;
+    border: 1px solid var(--sand-dark);
+    border-radius: 10px;
+    padding: 1.1rem 1.3rem;
+}
+.stat-card .stat-number {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--forest);
+}
+.stat-card .stat-label {
+    color: #7a7466;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.trek-card {
+    background: #fff;
+    border: 1px solid var(--sand-dark);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: box-shadow 0.15s ease;
+}
+.trek-card:hover {
+    box-shadow: 0 6px 18px rgba(34, 53, 35, 0.12);
+}
+.trek-card .trek-card-header {
+    background: var(--forest);
+    color: var(--sand);
+    padding: 0.9rem 1.1rem;
+}
+
+.badge-difficulty-Easy { background-color: #5c8a5f; }
+.badge-difficulty-Moderate { background-color: var(--amber); }
+.badge-difficulty-Hard { background-color: var(--danger); }
+
+.badge-status-Open { background-color: #4c6b4f; }
+.badge-status-Closed { background-color: #8a8478; }
+.badge-status-Pending { background-color: #b08a3e; }
+.badge-status-Approved { background-color: #3f6f8f; }
+.badge-status-Completed { background-color: #5b4b8a; }
+
+.table-trek thead {
+    background-color: var(--forest);
+    color: var(--sand);
+}
+
+.auth-panel {
+    max-width: 420px;
+    margin: 4rem auto;
+    background: #fff;
+    border: 1px solid var(--sand-dark);
+    border-radius: 12px;
+    padding: 2.2rem;
+}
+
+.bar-row {
+    margin-bottom: 0.85rem;
+}
+.bar-row:last-child {
+    margin-bottom: 0;
+}
+.bar-row-label {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+}
+.bar-track {
+    background-color: var(--sand-dark);
+    border-radius: 5px;
+    height: 10px;
+    overflow: hidden;
+}
+.bar-fill {
+    height: 100%;
+    border-radius: 5px;
+}
+.bar-forest { background-color: var(--forest); }
+.bar-amber { background-color: var(--amber); }
+.bar-difficulty-Easy { background-color: #5c8a5f; }
+.bar-difficulty-Moderate { background-color: var(--amber); }
+.bar-difficulty-Hard { background-color: var(--danger); }
+
+.landing-hero {
+    background: linear-gradient(135deg, var(--forest) 0%, var(--forest-dark) 100%);
+    color: var(--sand);
+    padding: 5rem 1rem;
+}

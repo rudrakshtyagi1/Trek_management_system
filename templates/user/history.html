@@ -1,0 +1,52 @@
+{% extends "shared/base.html" %}
+{% block title %}Trekking History{% endblock %}
+{% block sidebar %}{% include "shared/user_sidebar.html" %}{% endblock %}
+{% block main_class %}col-md-10{% endblock %}
+
+{% block content %}
+<h3 class="brand-font mb-3">Trekking History</h3>
+
+<div class="stat-card p-0">
+    <table class="table table-trek mb-0">
+        <thead><tr><th>Trek Name</th><th>Trek Dates</th><th>Completed On</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        {% for b in bookings %}
+            <tr>
+                <td>{{ b.trek.name }}</td>
+                <td>{{ b.trek.start_date or '—' }} - {{ b.trek.end_date or '—' }}</td>
+                <td>{{ b.trek.end_date or b.booking_date.strftime('%d %b %Y') }}</td>
+                <td><span class="badge badge-status-{{ b.status }}">{{ b.status }}</span></td>
+                <td class="text-end">
+                    {% if b.trek_id in reviewed %}
+                        <span class="text-muted small">Reviewed</span>
+                    {% else %}
+                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#review-{{ b.trek_id }}">Leave Review</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% if b.trek_id not in reviewed %}
+            <tr class="collapse" id="review-{{ b.trek_id }}">
+                <td colspan="5">
+                    <form method="POST" action="{{ url_for('user.submit_review', trek_id=b.trek_id) }}" class="row g-2 align-items-center">
+                        <div class="col-auto">
+                            <select name="rating" class="form-select form-select-sm">
+                                {% for i in [5,4,3,2,1] %}<option value="{{ i }}">{{ i }} ★</option>{% endfor %}
+                            </select>
+                        </div>
+                        <div class="col">
+                            <input type="text" name="comment" class="form-control form-control-sm" placeholder="Say something about the trek (optional)">
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-sm btn-amber">Submit</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            {% endif %}
+        {% else %}
+            <tr><td colspan="5" class="text-muted text-center py-3">No completed treks yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

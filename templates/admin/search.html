@@ -1,0 +1,35 @@
+{% extends "shared/base.html" %}
+{% block title %}Search{% endblock %}
+{% block sidebar %}{% include "shared/admin_sidebar.html" %}{% endblock %}
+{% block main_class %}col-md-10{% endblock %}
+
+{% block content %}
+<h3 class="brand-font mb-3">Search</h3>
+
+<form method="GET" class="mb-4">
+    <input type="text" name="q" value="{{ query }}" class="form-control form-control-lg" placeholder="Search treks, staff, or users by name...">
+</form>
+
+{% if query %}
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-label mb-2">Treks ({{ treks|length }})</div>
+            {% for t in treks %}<div class="py-1 border-bottom">{{ t.name }} <span class="text-muted small">— {{ t.location }}</span></div>{% else %}<p class="text-muted">No matches.</p>{% endfor %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-label mb-2">Staff ({{ staff|length }})</div>
+            {% for s in staff %}<div class="py-1 border-bottom">{{ s.name }} <span class="text-muted small">— {{ s.email }}</span></div>{% else %}<p class="text-muted">No matches.</p>{% endfor %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-label mb-2">Users ({{ users|length }})</div>
+            {% for u in users %}<div class="py-1 border-bottom">{{ u.name }} <span class="text-muted small">— {{ u.email }}</span></div>{% else %}<p class="text-muted">No matches.</p>{% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "shared/base.html" %}
+{% block title %}{{ trek.name }}{% endblock %}
+{% block sidebar %}{% include "shared/staff_sidebar.html" %}{% endblock %}
+{% block main_class %}col-md-10{% endblock %}
+
+{% block content %}
+<h3 class="brand-font mb-4">{{ trek.name }}</h3>
+
+<div class="row g-3">
+    <div class="col-md-5">
+        <div class="stat-card">
+            <div class="stat-label mb-2">Trek Information</div>
+            <p class="mb-1"><strong>Location:</strong> {{ trek.location }}</p>
+            <p class="mb-1"><strong>Duration:</strong> {{ trek.duration_days }} days</p>
+            <p class="mb-1"><strong>Start:</strong> {{ trek.start_date or '—' }}</p>
+            <p class="mb-3"><strong>End:</strong> {{ trek.end_date or '—' }}</p>
+
+            <form method="POST">
+                <label class="form-label">Available Slots</label>
+                <input type="number" name="available_slots" min="0" max="{{ trek.total_slots }}" value="{{ trek.available_slots }}" class="form-control mb-3">
+
+                <label class="form-label">Status</label>
+                <select name="status" class="form-select mb-3">
+                    {% for s in ['Approved', 'Open', 'Closed', 'Completed'] %}
+                        <option value="{{ s }}" {{ 'selected' if trek.status == s }}>{{ s }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-forest w-100">Save Changes</button>
+            </form>
+
+            <div class="d-flex gap-2 mt-3">
+                <form method="POST" action="{{ url_for('staff.mark_trek', trek_id=trek.id, new_status='Open') }}" class="flex-fill">
+                    <button class="btn btn-sm btn-outline-secondary w-100">Mark as Started</button>
+                </form>
+                <form method="POST" action="{{ url_for('staff.mark_trek', trek_id=trek.id, new_status='Completed') }}" class="flex-fill" onsubmit="return confirm('Mark this trek completed? This will close out all active bookings.');">
+                    <button class="btn btn-sm btn-amber w-100">Mark as Completed</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="stat-card">
+            <div class="stat-label mb-2">Participants ({{ participants|length }})</div>
+            <table class="table table-trek table-sm mb-0">
+                <thead><tr><th>User Name</th><th>Booking Date</th><th>Status</th></tr></thead>
+                <tbody>
+                {% for p in participants %}
+                    <tr>
+                        <td>{{ p.user.name }}</td>
+                        <td>{{ p.booking_date.strftime('%d %b %Y') }}</td>
+                        <td><span class="badge badge-status-{{ p.status }}">{{ p.status }}</span></td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="3" class="text-muted text-center py-3">No bookings yet.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

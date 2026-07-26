@@ -1,0 +1,51 @@
+{% extends "shared/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block sidebar %}{% include "shared/user_sidebar.html" %}{% endblock %}
+{% block main_class %}col-md-10{% endblock %}
+
+{% block content %}
+<h3 class="brand-font mb-4">Welcome, {{ current_user.name }}!</h3>
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <div class="stat-label mb-0">Available Treks</div>
+    <a href="{{ url_for('user.browse_treks') }}" class="small">Browse all →</a>
+</div>
+<div class="row g-3 mb-4">
+    {% for t in treks %}
+    <div class="col-md-4">
+        <div class="trek-card h-100">
+            <div class="trek-card-header d-flex justify-content-between">
+                <strong>{{ t.name }}</strong>
+                <span class="badge badge-difficulty-{{ t.difficulty }}">{{ t.difficulty }}</span>
+            </div>
+            <div class="p-3">
+                <p class="mb-1 text-muted small">{{ t.location }} · {{ t.duration_days }} days</p>
+                <p class="mb-3 small">{{ t.available_slots }} slots left</p>
+                <a href="{{ url_for('user.trek_details', trek_id=t.id) }}" class="btn btn-sm btn-forest w-100">View & Book</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12"><p class="text-muted">No open treks right now — check back soon.</p></div>
+    {% endfor %}
+</div>
+
+<div class="stat-card p-0">
+    <div class="p-3 pb-0 stat-label">My Bookings</div>
+    <table class="table table-trek mb-0">
+        <thead><tr><th>Trek Name</th><th>Booking Date</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        {% for b in bookings %}
+            <tr>
+                <td>{{ b.trek.name }}</td>
+                <td>{{ b.booking_date.strftime('%d %b %Y') }}</td>
+                <td><span class="badge badge-status-{{ b.status }}">{{ b.status }}</span></td>
+                <td class="text-end"><a href="{{ url_for('user.trek_details', trek_id=b.trek.id) }}" class="btn btn-sm btn-outline-secondary">View Details</a></td>
+            </tr>
+        {% else %}
+            <tr><td colspan="4" class="text-muted text-center py-3">No bookings yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

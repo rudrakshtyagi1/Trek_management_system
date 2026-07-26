@@ -1,0 +1,8 @@
+<nav class="col-md-2 sidebar-trek py-3">
+    <a href="{{ url_for('admin.dashboard') }}" class="{{ 'active' if active == 'dashboard' }}">Dashboard</a>
+    <a href="{{ url_for('admin.treks') }}" class="{{ 'active' if active == 'treks' }}">Treks</a>
+    <a href="{{ url_for('admin.staff_list') }}" class="{{ 'active' if active == 'staff' }}">Staff</a>
+    <a href="{{ url_for('admin.users_list') }}" class="{{ 'active' if active == 'users' }}">Users</a>
+    <a href="{{ url_for('admin.bookings_list') }}" class="{{ 'active' if active == 'bookings' }}">Bookings</a>
+    <a href="{{ url_for('admin.search') }}" class="{{ 'active' if active == 'search' }}">Search</a>
+</nav>

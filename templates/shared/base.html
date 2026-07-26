@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Trekking Management{% endblock %} | TrailBase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-trek">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand brand-font fw-bold" href="{{ url_for('index') }}">🏔 TrailBase</a>
+            <div class="d-flex">
+                {% if current_user.is_authenticated %}
+                    <span class="navbar-text text-white-50 me-3">
+                        {{ current_user.name if current_user.get_id().startswith('user') or current_user.get_id().startswith('staff') else current_user.username }}
+                    </span>
+                    <a class="btn btn-sm btn-outline-light" href="{{ url_for('auth.logout') }}">Logout</a>
+                {% else %}
+                    <a class="btn btn-sm btn-outline-light me-2" href="{{ url_for('auth.login') }}">Login</a>
+                    <a class="btn btn-sm btn-amber" href="{{ url_for('auth.register') }}">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            {% block sidebar %}{% endblock %}
+            <main class="{% block main_class %}col-12{% endblock %} py-4 px-4">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'danger' else category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% extends "shared/base.html" %}
+{% block title %}My Profile{% endblock %}
+{% block sidebar %}{% include "shared/user_sidebar.html" %}{% endblock %}
+{% block main_class %}col-md-10{% endblock %}
+
+{% block content %}
+<h3 class="brand-font mb-3">My Profile</h3>
+
+<div class="stat-card" style="max-width: 480px;">
+    <form method="POST">
+        <div class="mb-3">
+            <label class="form-label">Full name</label>
+            <input type="text" name="name" class="form-control" value="{{ current_user.name }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" value="{{ current_user.email }}" disabled>
+            <div class="form-text">Email can't be changed.</div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Contact number</label>
+            <input type="text" name="contact" class="form-control" value="{{ current_user.contact or '' }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">New password</label>
+            <input type="password" name="new_password" class="form-control" placeholder="Leave blank to keep current password">
+        </div>
+        <button type="submit" class="btn btn-forest">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

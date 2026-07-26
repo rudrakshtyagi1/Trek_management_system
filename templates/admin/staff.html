@@ -1,0 +1,51 @@
+{% extends "shared/base.html" %}
+{% block title %}Manage Staff{% endblock %}
+{% block sidebar %}{% include "shared/admin_sidebar.html" %}{% endblock %}
+{% block main_class %}col-md-10{% endblock %}
+
+{% block content %}
+<h3 class="brand-font mb-4">Staff Requests</h3>
+
+<ul class="nav nav-pills mb-3">
+    <li class="nav-item"><a class="nav-link {{ 'active bg-forest' if tab == 'pending' }}" href="{{ url_for('admin.staff_list', tab='pending') }}">Pending ({{ counts.pending }})</a></li>
+    <li class="nav-item"><a class="nav-link {{ 'active bg-forest' if tab == 'approved' }}" href="{{ url_for('admin.staff_list', tab='approved') }}">Approved ({{ counts.approved }})</a></li>
+    <li class="nav-item"><a class="nav-link {{ 'active bg-forest' if tab == 'blacklisted' }}" href="{{ url_for('admin.staff_list', tab='blacklisted') }}">Blacklisted ({{ counts.blacklisted }})</a></li>
+</ul>
+
+<div class="stat-card p-0">
+    <table class="table table-trek mb-0">
+        <thead><tr><th>Staff ID</th><th>Name</th><th>Email</th><th>Contact</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        {% for s in staff_members %}
+            <tr>
+                <td>S{{ '%03d' % s.id }}</td>
+                <td>{{ s.name }}</td>
+                <td>{{ s.email }}</td>
+                <td>{{ s.contact or '—' }}</td>
+                <td><span class="badge badge-status-{{ s.status|capitalize }}">{{ s.status }}</span></td>
+                <td class="text-end">
+                    {% if tab == 'pending' %}
+                        <form method="POST" action="{{ url_for('admin.set_staff_status', staff_id=s.id, new_status='approved') }}" class="d-inline">
+                            <button class="btn btn-sm btn-forest">Approve</button>
+                        </form>
+                        <form method="POST" action="{{ url_for('admin.set_staff_status', staff_id=s.id, new_status='rejected') }}" class="d-inline">
+                            <button class="btn btn-sm btn-outline-danger">Reject</button>
+                        </form>
+                    {% elif tab == 'approved' %}
+                        <form method="POST" action="{{ url_for('admin.set_staff_status', staff_id=s.id, new_status='blacklisted') }}" class="d-inline" onsubmit="return confirm('Blacklist this staff member?');">
+                            <button class="btn btn-sm btn-outline-danger">Blacklist</button>
+                        </form>
+                    {% elif tab == 'blacklisted' %}
+                        <form method="POST" action="{{ url_for('admin.set_staff_status', staff_id=s.id, new_status='approved') }}" class="d-inline">
+                            <button class="btn btn-sm btn-outline-secondary">Reinstate</button>
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="6" class="text-muted text-center py-3">Nothing here.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
