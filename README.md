@@ -1,4 +1,4 @@
-# TrailBase — Trekking Management Application
+# Trekkers — Trekking Management Application
 
 A Flask + Jinja2 + Bootstrap + SQLite web app for managing treks across
 three roles: Admin, Trek Staff, and Users (Trekkers).
